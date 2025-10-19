@@ -6,23 +6,42 @@
   height: 200px;
   z-index: -1; /* Behind other content */
   pointer-events: none; /* Don't interfere with interactions */
+  /* Force visibility on all devices */
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .mountainSvg {
   width: 100%;
   height: 100%;
   display: block;
+  /* Ensure SVG is visible */
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .mountainContainer {
     height: 150px;
+    display: block !important; /* Force display on mobile */
   }
 }
 
 @media (max-width: 480px) {
   .mountainContainer {
     height: 120px;
+    display: block !important; /* Force display on mobile */
+  }
+}
+
+/* Additional mobile fixes */
+@media (max-width: 600px) {
+  .mountainContainer {
+    height: 100px; /* Smaller but still visible */
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 }

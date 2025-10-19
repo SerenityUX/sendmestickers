@@ -183,6 +183,7 @@ a.secondary {
     0 0 0 1px rgba(255,255,255,0.1) inset; /* glass highlight */
 }
 
+
 .toggle {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -276,6 +277,40 @@ a.secondary {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+  }
+
+  /* Mobile toggle adjustments */
+  .toggleWrapper {
+    width: 320px; /* bigger width on mobile */
+    margin: 120px auto 0; /* moved down much more to show stickers */
+    padding: 8px; /* bigger padding */
+  }
+
+  .toggle button {
+    height: 40px; /* smaller height on mobile */
+    font-size: 14px; /* smaller text */
+    letter-spacing: 0.8px; /* reduced letter spacing */
+  }
+
+  .toggleThumb {
+    height: 40px; /* match button height */
+  }
+
+  /* Mobile circle adjustments */
+  .halfCircleSpinner {
+    width: 360px; /* smaller circle on mobile */
+    height: 360px;
+    margin: -320px auto 0; /* moved much higher on mobile to be above toggle */
+    margin-left: calc(50% - 180px - 20px); /* adjusted for smaller circle */
+  }
+
+  .halfCircleItem {
+    transform: rotate(calc(var(--angle) + var(--rotation, 0deg))) translate(180px) rotate(calc(-1 * var(--angle) - var(--rotation, 0deg)));
+  }
+
+  .stickerContainer {
+    width: 60px; /* smaller stickers on mobile */
+    height: 60px;
   }
 }
 
