@@ -1,0 +1,28 @@
+.mountainContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  z-index: -1; /* Behind other content */
+  pointer-events: none; /* Don't interfere with interactions */
+}
+
+.mountainSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mountainContainer {
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mountainContainer {
+    height: 120px;
+  }
+}

@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import SendReceiveToggle from "@/components/SendReceiveToggle";
+import MountainBackground from "@/components/MountainBackground";
 import { Geist, Geist_Mono } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import MiddleSenderComponent from "@/components/MiddleSenderComponent";
@@ -19,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 // Constants for circle dimensions (should match CSS)
-const CIRCLE_RADIUS = 230; // pixels from center to sticker position
+const CIRCLE_RADIUS = 240; // pixels from center to sticker position
 const STICKER_SIZE = 80; // fixed size for sticker containers (width and height)
 const ARC_START = 180; // degrees (left bottom)
 const ARC_END = 360; // degrees (right bottom)
@@ -156,6 +157,9 @@ export default function Home() {
             <MiddleReceiverComponent />
           )}
         </main>
+        
+        {/* Mountain background */}
+        <MountainBackground />
       </div>
     </>
   );
