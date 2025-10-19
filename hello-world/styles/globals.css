@@ -3,12 +3,8 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Force light theme */
+/* Remove dark theme to avoid black background */
 
 html,
 body {
