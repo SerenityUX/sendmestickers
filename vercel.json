@@ -1,15 +1,5 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "hello-world/package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "hello-world/$1"
-    }
-  ]
+  "buildCommand": "cd hello-world && npm run build",
+  "outputDirectory": "hello-world/.next",
+  "installCommand": "cd hello-world && npm install"
 }
