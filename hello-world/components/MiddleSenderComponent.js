@@ -1,15 +1,22 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
-export default function MiddleSenderComponent({ mode, setMode }) {
+export default function MiddleSenderComponent({ mode, setMode, prefilledUsername }) {
   const [uploadState, setUploadState] = useState("upload"); // "upload", "uploading", "result"
   const [imageUrl, setImageUrl] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [username, setUsername] = useState("@");
+  const [username, setUsername] = useState(prefilledUsername || "@");
   const [buttonText, setButtonText] = useState("Send Sticker");
   const [isSending, setIsSending] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const fileInputRef = useRef(null);
+
+  // Update username when prefilledUsername changes
+  useEffect(() => {
+    if (prefilledUsername) {
+      setUsername(prefilledUsername);
+    }
+  }, [prefilledUsername]);
 
   const handleFileSelect = (file) => {
     if (!file) return;

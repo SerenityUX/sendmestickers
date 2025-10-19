@@ -5,6 +5,8 @@ import SendReceiveToggle from "@/components/SendReceiveToggle";
 import { Geist, Geist_Mono } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import MiddleSenderComponent from "@/components/MiddleSenderComponent";
+import MiddleReceiverComponent from "@/components/MiddleReceiverComponent";
+import { useRouter } from "next/router";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,9 +26,21 @@ const ARC_END = 360; // degrees (right bottom)
 const PADDING_DEGREES = 2; // degrees of padding between stickers
 
 export default function Home() {
+  const router = useRouter();
   const [selectedPage, setSelectedPage] = useState("Send");
   const [stickerAngles, setStickerAngles] = useState([]);
   const [mode, setMode] = useState("send");
+  const [prefilledUsername, setPrefilledUsername] = useState("");
+
+  // Check for handle query parameter on mount
+  useEffect(() => {
+    if (router.isReady && router.query.handle) {
+      const handle = router.query.handle;
+      setPrefilledUsername(handle);
+      setSelectedPage("Send");
+      setMode("send");
+    }
+  }, [router.isReady, router.query.handle]);
 
   const handlePageChange = (page) => {
     setSelectedPage(page);
@@ -136,7 +150,11 @@ export default function Home() {
           {/* Segmented toggle */}
           <SendReceiveToggle onPageChange={handlePageChange} />
 
-          <MiddleSenderComponent mode={mode} setMode={setMode} />
+          {mode === "send" ? (
+            <MiddleSenderComponent mode={mode} setMode={setMode} prefilledUsername={prefilledUsername} />
+          ) : (
+            <MiddleReceiverComponent />
+          )}
         </main>
       </div>
     </>
