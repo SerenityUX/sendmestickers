@@ -8,11 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.913.0",
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.4.0",
+    "dotenv": "^17.2.3",
+    "multer": "^2.0.2",
     "next": "15.5.6",
+    "pg": "^8.16.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "three": "^0.180.0"
+    "three": "^0.180.0",
+    "uuid": "^13.0.0"
   }
 }
