@@ -80,7 +80,8 @@ export default function MiddleSenderComponent({ mode, setMode }) {
     setButtonText("Confirming sticker...");
     
     try {
-      const response = await fetch("/api/sendSticker", {
+      // First, verify the receiver exists
+      const verifyResponse = await fetch("/api/sendSticker", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,23 +92,49 @@ export default function MiddleSenderComponent({ mode, setMode }) {
         }),
       });
 
-      const data = await response.json();
+      const verifyData = await verifyResponse.json();
 
-      if (response.ok) {
-        setIsSuccess(true);
-        setButtonText("Confirmed...");
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setButtonText("Taking you to checkout");
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        window.location.href = "https://stripe.com/";
-      } else {
+      if (!verifyResponse.ok) {
         // Handle errors, especially 404 for receiver not found
         setIsError(true);
-        if (response.status === 404) {
+        if (verifyResponse.status === 404) {
           setButtonText("Receiver not found");
         } else {
-          setButtonText(data.error || "Error sending sticker");
+          setButtonText(verifyData.error || "Error sending sticker");
         }
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setButtonText("Send Sticker");
+        setIsSending(false);
+        setIsError(false);
+        return;
+      }
+
+      // Receiver exists, now create Stripe checkout
+      setIsSuccess(true);
+      setButtonText("Creating checkout...");
+      
+      const checkoutResponse = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          imageUrl: imageUrl,
+          username: username,
+          handle: username.slice(1),
+        }),
+      });
+
+      const checkoutData = await checkoutResponse.json();
+
+      if (checkoutData.url) {
+        setButtonText("Taking you to checkout...");
+        await new Promise(resolve => setTimeout(resolve, 500));
+        // Redirect to Stripe Checkout
+        window.location.href = checkoutData.url;
+      } else {
+        setIsError(true);
+        setButtonText("Checkout failed");
         await new Promise(resolve => setTimeout(resolve, 2000));
         setButtonText("Send Sticker");
         setIsSending(false);
