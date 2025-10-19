@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import SendReceiveToggle from "@/components/SendReceiveToggle";
+import MountainBackground from "@/components/MountainBackground";
 import { Geist, Geist_Mono } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import MiddleSenderComponent from "@/components/MiddleSenderComponent";
@@ -19,8 +20,10 @@ const geistMono = Geist_Mono({
 });
 
 // Constants for circle dimensions (should match CSS)
-const CIRCLE_RADIUS = 230; // pixels from center to sticker position
+const CIRCLE_RADIUS = 240; // pixels from center to sticker position (desktop)
+const CIRCLE_RADIUS_MOBILE = 180; // pixels from center to sticker position (mobile)
 const STICKER_SIZE = 80; // fixed size for sticker containers (width and height)
+const STICKER_SIZE_MOBILE = 60; // fixed size for sticker containers (mobile)
 const ARC_START = 180; // degrees (left bottom)
 const ARC_END = 360; // degrees (right bottom)
 const PADDING_DEGREES = 2; // degrees of padding between stickers
@@ -53,10 +56,13 @@ export default function Home() {
   useEffect(() => {
     const calculatePositions = () => {
       const numStickers = stickerSources.length;
+      const isMobile = window.innerWidth <= 600;
+      const radius = isMobile ? CIRCLE_RADIUS_MOBILE : CIRCLE_RADIUS;
+      const stickerSize = isMobile ? STICKER_SIZE_MOBILE : STICKER_SIZE;
       
       // Calculate angular width for each sticker (all same size now)
       // Formula: angular_width = 2 * arctan(sticker_width / (2 * radius))
-      const radians = 2 * Math.atan(STICKER_SIZE / (2 * CIRCLE_RADIUS));
+      const radians = 2 * Math.atan(stickerSize / (2 * radius));
       const angularWidth = (radians * 180) / Math.PI; // convert to degrees
 
       // Calculate total angular space needed (including padding)
@@ -135,7 +141,7 @@ export default function Home() {
                           src={src}
                           alt={`Sticker ${idx + 1}`}
                           fill
-                          sizes="80px"
+                          sizes="180px"
                           style={{ objectFit: "contain" }}
                           priority={idx < 5} // prioritize first few images
                         />
@@ -156,6 +162,9 @@ export default function Home() {
             <MiddleReceiverComponent />
           )}
         </main>
+        
+        {/* Mountain background */}
+        <MountainBackground />
       </div>
     </>
   );
