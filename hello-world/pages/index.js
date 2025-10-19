@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import styles from "@/styles/Home.module.css";
+import MiddleSenderComponent from "@/components/MiddleSenderComponent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,6 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export default function Home() {
+  const [mode, setMode] = useState("send");
+
   return (
     <>
       <Head>
@@ -59,15 +62,18 @@ export default function Home() {
           </div>
 
           {/* Segmented toggle */}
-          <Toggle />
+          <Toggle mode={mode} setMode={setMode} />
+
+          <MiddleSenderComponent mode={mode} setMode={setMode} />
+
+        {/* middle part */}
         </main>
       </div>
     </>
   );
 }
 
-function Toggle() {
-  const [mode, setMode] = useState("send");
+function Toggle({ mode, setMode }) {
   return (
     <div className={styles.toggleWrapper} style={{ marginTop: 60 }}>
       <div className={styles.toggle}>
