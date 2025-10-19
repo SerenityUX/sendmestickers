@@ -124,27 +124,29 @@ a.secondary {
 .halfCircleContainer {
   position: relative;
   width: 100%;
-  height: 260px; /* give extra room so bottom isn't clipped */
+  height: 200px; /* reduced height to move circle up */
   overflow: visible; /* allow bottom part to show */
 }
 
 .halfCircleSpinner {
   position: relative;
-  width: 440px;
-  height: 440px;
-  margin: -260px auto 0; /* push more of the top off-screen so only bottom shows */
+  width: 480px;
+  height: 480px;
+  margin: -250px auto 0; /* moved up more */
   border: 2px solid var(--gray-alpha-200);
   border-radius: 50%;
   box-sizing: border-box;
-  animation: circle-rotate 20s linear infinite; /* faster ring */
+  /* No rotation on the container itself */
+  will-change: transform;
 }
 
 .halfCircleItem {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: rotate(var(--angle)) translate(170px) rotate(calc(-1 * var(--angle)));
-  transform-origin: center center;
+  /* Rotate to position, move outward, then counter-rotate to stay upright accounting for spinner rotation */
+  transform: rotate(calc(var(--angle) + var(--rotation, 0deg))) translate(230px) rotate(calc(-1 * var(--angle) - var(--rotation, 0deg)));
+  transform-origin: 0 0;
   /* slightly softer pixelation */
   image-rendering: crisp-edges;
   image-rendering: -moz-crisp-edges;
@@ -153,16 +155,25 @@ a.secondary {
 }
 
 .halfCircleItemInner {
-  animation: item-rotate 20s linear infinite; /* counter-rotate sticker itself */
+  /* No additional transform needed - all rotation handled in parent */
+}
+
+.stickerContainer {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Segmented toggle */
 .toggleWrapper {
-  width: 360px;
+  width: 380px; /* bigger width */
   margin: 40px auto 0; /* moved down by ~20px */
-  padding: 6px;
+  padding: 8px; /* bigger padding */
   background: #e8f0fb; /* requested padding color */
-  border-radius: 16px;
+  border-radius: 24px; /* more rounded */
   box-shadow: 0 1px 0 rgba(0,0,0,0.05) inset, 0 8px 24px rgba(0,0,0,0.06);
 }
 
@@ -170,17 +181,19 @@ a.secondary {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6px;
+  position: relative;
 }
 
 .toggle button {
   appearance: none;
   border: 0;
-  height: 44px;
-  border-radius: 12px;
+  height: 48px; /* bigger height */
+  border-radius: 20px; /* more rounded */
   background: transparent;
   color: #6982a5; /* default label color */
   font-weight: 700;
-  letter-spacing: 0.2px;
+  letter-spacing: 1.2px; /* increased letter spacing */
+  font-size: 16px; /* bigger text */
   transition: background 200ms ease, color 200ms ease, box-shadow 200ms ease;
 }
 
@@ -190,14 +203,25 @@ a.secondary {
   box-shadow: 0 4px 12px rgba(50, 105, 185, 0.35);
 }
 
+.toggleThumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(50% - 3px);
+  height: 48px; /* match button height */
+  border-radius: 20px; /* match button radius */
+  background: #3269b9;
+  box-shadow: 0 4px 12px rgba(50, 105, 185, 0.35);
+  transition: transform 220ms ease;
+  z-index: 0;
+}
+
+.toggle button { position: relative; z-index: 1; }
+
+
 @keyframes circle-rotate {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
-
-@keyframes item-rotate {
-  from { rotate: 0deg; }
-  to { rotate: -360deg; }
 }
 
 @media (max-width: 600px) {
