@@ -1,6 +1,0 @@
-{
-  "buildCommand": "cd hello-world && npm run build",
-  "devCommand": "cd hello-world && npm run dev",
-  "installCommand": "cd hello-world && npm install",
-  "outputDirectory": "hello-world/.next"
-}
