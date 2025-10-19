@@ -26,9 +26,11 @@ const PADDING_DEGREES = 2; // degrees of padding between stickers
 export default function Home() {
   const [selectedPage, setSelectedPage] = useState("Send");
   const [stickerAngles, setStickerAngles] = useState([]);
+  const [mode, setMode] = useState("send");
 
   const handlePageChange = (page) => {
     setSelectedPage(page);
+    setMode(page.toLowerCase());
   };
 
   const stickerSources = Array.from({ length: 15 }, (_, i) => `/${i + 1}.png`);
@@ -87,8 +89,6 @@ export default function Home() {
     };
   }, [stickerSources.length]);
 
-  const [mode, setMode] = useState("send");
-
   return (
     <>
       <Head>
@@ -134,36 +134,36 @@ export default function Home() {
           </div>
 
           {/* Segmented toggle */}
-          <Toggle mode={mode} setMode={setMode} />
+          <SendReceiveToggle onPageChange={handlePageChange} />
 
           <MiddleSenderComponent mode={mode} setMode={setMode} />
-
-        {/* middle part */}
         </main>
       </div>
     </>
   );
 }
 
-function Toggle({ mode, setMode }) {
-  return (
-    <div className={styles.toggleWrapper} style={{ marginTop: 60 }}>
-      <div className={styles.toggle}>
-        <button
-          className={mode === "send" ? styles.active : undefined}
-          onClick={() => setMode("send")}
-          style={{ color: mode === "send" ? "#fff" : "#6982a5" }}
-        >
-          Send
-        </button>
-        <button
-          className={mode === "receive" ? styles.active : undefined}
-          onClick={() => setMode("receive")}
-          style={{ color: mode === "receive" ? "#fff" : "#6982a5" }}
-        >
-          Receive
-        </button>
-      </div>
-    </div>
-  );
+const spinnerRef = { current: null };
+
+export function useSpin(speedDegPerSec = 18) {
+  const frameRef = useRef();
+  const startRef = useRef();
+  useEffect(() => {
+    const el = spinnerRef.current;
+    if (!el) return;
+    const step = (ts) => {
+      if (!startRef.current) startRef.current = ts;
+      const elapsed = (ts - startRef.current) / 1000;
+      const deg = (elapsed * speedDegPerSec) % 360;
+      el.style.setProperty("--rotation", `${deg}deg`);
+      frameRef.current = requestAnimationFrame(step);
+    };
+    frameRef.current = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(frameRef.current);
+  }, [speedDegPerSec]);
+}
+
+function SpinController() {
+  useSpin(18); // smooth ferris-wheel speed
+  return null;
 }
