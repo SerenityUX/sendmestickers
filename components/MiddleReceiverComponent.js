@@ -77,8 +77,26 @@ export default function MiddleReceiverComponent() {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", width: "100%", paddingTop: "32px" }}>
-      <div style={{ width: "600px", maxWidth: "100%" }}>
+    <div style={{ 
+      display: "flex", 
+      justifyContent: "center", 
+      width: "100%", 
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: 10,
+      padding: "20px"
+    }}>
+      <div style={{ 
+        width: "600px", 
+        maxWidth: "100%",
+        backgroundColor: "rgba(255, 255, 255, 0.5)",
+        backdropFilter: "blur(10px)",
+        borderRadius: "16px",
+        padding: "30px",
+        border: "1px solid rgb(230, 230, 230)"
+      }}>
         {!isSuccess ? (
           <>
             <div style={{ marginBottom: "20px" }}>
@@ -101,8 +119,10 @@ export default function MiddleReceiverComponent() {
                   width: "100%",
                   padding: "10px",
                   borderRadius: "8px",
-                  border: "1px solid #ccc",
-                  fontSize: "16px"
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  backgroundColor: "transparent",
+                  fontSize: "16px",
+                  color: "#333"
                 }}
               />
             </div>
@@ -120,10 +140,12 @@ export default function MiddleReceiverComponent() {
                   width: "100%",
                   padding: "10px",
                   borderRadius: "8px",
-                  border: "1px solid #ccc",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  backgroundColor: "transparent",
                   fontSize: "16px",
                   fontFamily: "inherit",
-                  resize: "vertical"
+                  resize: "vertical",
+                  color: "#333"
                 }}
               />
             </div>
@@ -141,8 +163,10 @@ export default function MiddleReceiverComponent() {
                   width: "100%",
                   padding: "10px",
                   borderRadius: "8px",
-                  border: "1px solid #ccc",
-                  fontSize: "16px"
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  backgroundColor: "transparent",
+                  fontSize: "16px",
+                  color: "#333"
                 }}
               />
             </div>

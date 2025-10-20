@@ -160,8 +160,26 @@ export default function MiddleSenderComponent({ mode, setMode, prefilledUsername
   const isButtonDisabled = !imageUrl || username === "@" || username === "" || isSending;
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", width: "100%", paddingTop: "32px" }}>
-      <div style={{ width: "600px", maxWidth: "100%" }}>
+    <div style={{ 
+      display: "flex", 
+      justifyContent: "center", 
+      width: "100%", 
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: 10,
+      padding: "20px"
+    }}>
+      <div style={{ 
+        width: "600px", 
+        maxWidth: "100%",
+        backgroundColor: "rgba(255, 255, 255, 0.5)",
+        backdropFilter: "blur(10px)",
+        borderRadius: "16px",
+        padding: "30px",
+        border: "1px solid rgb(230, 230, 230)"
+      }}>
         <div style={{ 
           border: "2px dotted grey", 
           borderRadius: "12px",
@@ -229,7 +247,7 @@ export default function MiddleSenderComponent({ mode, setMode, prefilledUsername
         </div>
 
         <div style={{ marginTop: "20px" }}>
-          <label style={{ display: "block", marginBottom: "8px" }}>username</label>
+          <label style={{ display: "block", marginBottom: "8px" }}>Handle (username)</label>
           <input
             type="text"
             value={username}

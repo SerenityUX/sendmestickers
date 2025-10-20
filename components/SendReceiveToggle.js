@@ -34,7 +34,7 @@ export default function SendReceiveToggle({ onPageChange }) {
         </button>
         <span
           className={styles.toggleThumb}
-          style={{ transform: `translateX(${mode === "send" ? "0%" : "100%"})` }}
+          style={{ transform: `translateX(${mode === "send" ? "0%" : "calc(100% + 6px)"})` }}
           aria-hidden
         />
       </div>

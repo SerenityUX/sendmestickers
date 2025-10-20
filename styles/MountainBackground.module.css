@@ -26,6 +26,7 @@
   .mountainContainer {
     height: 150px;
     display: block !important; /* Force display on mobile */
+    z-index: 1; /* Ensure visibility */
   }
 }
 
@@ -33,15 +34,21 @@
   .mountainContainer {
     height: 120px;
     display: block !important; /* Force display on mobile */
+    z-index: 1; /* Ensure visibility */
   }
 }
 
 /* Additional mobile fixes */
 @media (max-width: 600px) {
   .mountainContainer {
-    height: 100px; /* Smaller but still visible */
+    height: 120px; /* Increased height for better visibility */
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
+    z-index: 1; /* Ensure it's above background but below content */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 }

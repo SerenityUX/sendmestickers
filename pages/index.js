@@ -34,6 +34,7 @@ export default function Home() {
   const [stickerAngles, setStickerAngles] = useState([]);
   const [mode, setMode] = useState("send");
   const [prefilledUsername, setPrefilledUsername] = useState("");
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Check for handle query parameter on mount
   useEffect(() => {
@@ -46,8 +47,20 @@ export default function Home() {
   }, [router.isReady, router.query.handle]);
 
   const handlePageChange = (page) => {
-    setSelectedPage(page);
-    setMode(page.toLowerCase());
+    if (page === selectedPage) return; // Prevent unnecessary transitions
+    
+    setIsTransitioning(true);
+    
+    // Start fade out
+    setTimeout(() => {
+      setSelectedPage(page);
+      setMode(page.toLowerCase());
+      
+      // Start fade in after a longer delay for cleaner effect
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 100);
+    }, 200); // Longer fade out time
   };
 
   const stickerSources = Array.from({ length: 15 }, (_, i) => `/${i + 1}.png`);
@@ -156,11 +169,18 @@ export default function Home() {
           {/* Segmented toggle */}
           <SendReceiveToggle onPageChange={handlePageChange} />
 
-          {mode === "send" ? (
-            <MiddleSenderComponent mode={mode} setMode={setMode} prefilledUsername={prefilledUsername} />
-          ) : (
-            <MiddleReceiverComponent />
-          )}
+          <div 
+            style={{ 
+              opacity: isTransitioning ? 0 : 1,
+              transition: 'opacity 200ms ease-in-out'
+            }}
+          >
+            {mode === "send" ? (
+              <MiddleSenderComponent mode={mode} setMode={setMode} prefilledUsername={prefilledUsername} />
+            ) : (
+              <MiddleReceiverComponent />
+            )}
+          </div>
         </main>
         
         {/* Mountain background */}
