@@ -35,6 +35,8 @@ export default function Home() {
   const [mode, setMode] = useState("send");
   const [prefilledUsername, setPrefilledUsername] = useState("");
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [selectedSticker, setSelectedSticker] = useState("");
+  const [hoveredSticker, setHoveredSticker] = useState(null);
 
   // Check for handle query parameter on mount
   useEffect(() => {
@@ -134,10 +136,13 @@ export default function Home() {
         className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
       >
         <main className={styles.mainMinimal}>
-          <SpinController />
+          <SpinController isPaused={hoveredSticker !== null} />
           {/* Bottom half of a rotating circle aligned to the top */}
           <div className={styles.halfCircleContainer}>
-            <div className={styles.halfCircleSpinner} ref={spinnerRef}>
+            <div 
+              className={styles.halfCircleSpinner} 
+              ref={spinnerRef}
+            >
               {stickerSources.map((src, idx) => {
                 // Use calculated angle or fallback to even distribution
                 const angle = stickerAngles[idx] ?? (ARC_START + ((ARC_END - ARC_START) / (stickerSources.length - 1)) * idx);
@@ -149,7 +154,16 @@ export default function Home() {
                     style={{ "--angle": `${angle}deg` }}
                   >
                     <div className={styles.halfCircleItemInner}>
-                      <div className={styles.stickerContainer}>
+                      <div 
+                        className={`${styles.stickerContainer} ${hoveredSticker === idx ? styles.pulseBorder : ''}`}
+                        onClick={() => setSelectedSticker(src)}
+                        onMouseEnter={() => setHoveredSticker(idx)}
+                        onMouseLeave={() => setHoveredSticker(null)}
+                        style={{ 
+                          cursor: "pointer",
+                          borderRadius: "8px"
+                        }}
+                      >
                         <Image
                           src={src}
                           alt={`Sticker ${idx + 1}`}
@@ -178,7 +192,13 @@ export default function Home() {
             }}
           >
             {mode === "send" ? (
-              <MiddleSenderComponent mode={mode} setMode={setMode} prefilledUsername={prefilledUsername} />
+              <MiddleSenderComponent 
+                mode={mode} 
+                setMode={setMode} 
+                prefilledUsername={prefilledUsername}
+                selectedSticker={selectedSticker}
+                setSelectedSticker={setSelectedSticker}
+              />
             ) : (
               <MiddleReceiverComponent />
             )}
@@ -194,13 +214,19 @@ export default function Home() {
 
 const spinnerRef = { current: null };
 
-export function useSpin(speedDegPerSec = 18) {
+export function useSpin(speedDegPerSec = 18, isPaused = false) {
   const frameRef = useRef();
   const startRef = useRef();
   useEffect(() => {
     const el = spinnerRef.current;
     if (!el) return;
+    
     const step = (ts) => {
+      if (isPaused) {
+        frameRef.current = requestAnimationFrame(step);
+        return;
+      }
+      
       if (!startRef.current) startRef.current = ts;
       const elapsed = (ts - startRef.current) / 1000;
       const deg = (elapsed * speedDegPerSec) % 360;
@@ -209,10 +235,10 @@ export function useSpin(speedDegPerSec = 18) {
     };
     frameRef.current = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frameRef.current);
-  }, [speedDegPerSec]);
+  }, [speedDegPerSec, isPaused]);
 }
 
-function SpinController() {
-  useSpin(18); // smooth ferris-wheel speed
+function SpinController({ isPaused }) {
+  useSpin(18, isPaused); // smooth ferris-wheel speed
   return null;
 }

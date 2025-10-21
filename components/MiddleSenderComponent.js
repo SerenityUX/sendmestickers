@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-export default function MiddleSenderComponent({ mode, setMode, prefilledUsername }) {
+export default function MiddleSenderComponent({ mode, setMode, prefilledUsername, selectedSticker, setSelectedSticker }) {
   const [uploadState, setUploadState] = useState("upload"); // "upload", "uploading", "result"
   const [imageUrl, setImageUrl] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -17,6 +17,59 @@ export default function MiddleSenderComponent({ mode, setMode, prefilledUsername
       setUsername(prefilledUsername);
     }
   }, [prefilledUsername]);
+
+  // Update image when selectedSticker changes
+  useEffect(() => {
+    if (selectedSticker) {
+      // Upload the selected sticker through the normal upload process
+      uploadStickerImage(selectedSticker);
+      setSelectedSticker(""); // Reset the selected sticker
+    }
+  }, [selectedSticker, setSelectedSticker]);
+
+  const uploadStickerImage = async (stickerSrc) => {
+    setUploadState("uploading");
+    setUploadProgress(0);
+    setImageUrl("");
+
+    try {
+      // Fetch the sticker image
+      const response = await fetch(stickerSrc);
+      const blob = await response.blob();
+      
+      // Create FormData
+      const formData = new FormData();
+      formData.append("image", blob, "sticker.png");
+
+      const xhr = new XMLHttpRequest();
+
+      xhr.upload.addEventListener("progress", (e) => {
+        if (e.lengthComputable) {
+          const percentComplete = Math.round((e.loaded / e.total) * 100);
+          setUploadProgress(percentComplete);
+        }
+      });
+
+      xhr.addEventListener("load", () => {
+        if (xhr.status === 200) {
+          const data = JSON.parse(xhr.responseText);
+          if (data.success) {
+            setImageUrl(data.imageUrl);
+            setUploadState("result");
+          }
+        }
+      });
+
+      xhr.addEventListener("error", () => {
+        setUploadState("upload");
+      });
+
+      xhr.open("POST", "/api/uploadImage");
+      xhr.send(formData);
+    } catch (error) {
+      setUploadState("upload");
+    }
+  };
 
   const handleFileSelect = (file) => {
     if (!file) return;

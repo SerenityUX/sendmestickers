@@ -168,6 +168,21 @@ a.secondary {
   justify-content: center;
 }
 
+.stickerContainer.pulseBorder {
+  animation: pulseBorder 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseBorder {
+  0%, 100% { 
+    border: 1px dotted #ccc;
+    transform: scale(1);
+  }
+  50% { 
+    border: 1px dotted #999;
+    transform: scale(1.05);
+  }
+}
+
 /* Segmented toggle */
 .toggleWrapper {
   width: 380px; /* bigger width */
