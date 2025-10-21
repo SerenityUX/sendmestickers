@@ -85,8 +85,9 @@ export default function MiddleReceiverComponent() {
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      zIndex: 10,
-      padding: "20px"
+      zIndex: 5,
+      padding: "20px",
+      marginTop: "0px"
     }}>
       <div style={{ 
         width: "600px", 
