@@ -4,7 +4,7 @@ import styles from "@/styles/Home.module.css";
 export default function SendReceiveToggle({ onPageChange }) {
   const [mode, setMode] = useState("send");
   return (
-    <div className={styles.toggleWrapper} style={{ marginTop: 140 }}>
+    <div className={styles.toggleWrapper} style={{ marginTop: 100 }}>
       <div className={styles.toggle} role="tablist" aria-label="Send or Receive">
         <button
           type="button"

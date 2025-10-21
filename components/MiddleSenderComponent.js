@@ -165,12 +165,11 @@ export default function MiddleSenderComponent({ mode, setMode, prefilledUsername
       justifyContent: "center", 
       width: "100%", 
       position: "absolute",
-      top: "50%",
+      top: "55%",
       left: "50%",
       transform: "translate(-50%, -50%)",
       zIndex: 5,
-      padding: "20px",
-      marginTop: "0px"
+      padding: "20px"
     }}>
       <div style={{ 
         width: "600px", 

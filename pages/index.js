@@ -167,7 +167,9 @@ export default function Home() {
           </div>
 
           {/* Segmented toggle */}
-          <SendReceiveToggle onPageChange={handlePageChange} />
+          <div style={{ zIndex: 15, position: "relative" }}>
+            <SendReceiveToggle onPageChange={handlePageChange} />
+          </div>
 
           <div 
             style={{ 
